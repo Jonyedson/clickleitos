@@ -15,6 +15,7 @@ public class DBService {
 	private UsuarioRepository repository;
 	
 	public void instantiateTestDatabase() {
+		
 		Usuario user01 = new Usuario(null, "123", "test01@gmail.com");
 		Usuario user02 = new Usuario(null, "456", "test02@gmail.com");
 		
