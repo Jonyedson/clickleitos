@@ -8,24 +8,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Usuario implements Serializable {
+public class Leitos implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String senha;
-	private String email;
-	
-	public Usuario() {
-		
+	private Integer total;
+	private Integer disponiveis;
+
+	public Leitos() {
+		super();
 	}
 
-	public Usuario(Long id, String senha, String email) {
+	public Leitos(Long id, Integer total, Integer disponiveis) {
 		super();
 		this.id = id;
-		this.senha = senha;
-		this.email = email;
+		this.total = total;
+		this.disponiveis = disponiveis;
 	}
 
 	public Long getId() {
@@ -36,20 +36,20 @@ public class Usuario implements Serializable {
 		this.id = id;
 	}
 
-	public String getSenha() {
-		return senha;
+	public Integer getTotal() {
+		return total;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setTotal(Integer total) {
+		this.total = total;
 	}
 
-	public String getEmail() {
-		return email;
+	public Integer getDisponiveis() {
+		return disponiveis;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setDisponiveis(Integer disponiveis) {
+		this.disponiveis = disponiveis;
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class Usuario implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Usuario other = (Usuario) obj;
+		Leitos other = (Leitos) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
