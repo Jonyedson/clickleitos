@@ -12,7 +12,7 @@
 
 ##### findAll "GET"
 
-´´´ localhost:8080/usuario ´´´
+''' localhost:8080/usuario '''
 
 ##### findById "GET"
 
