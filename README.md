@@ -21,12 +21,13 @@
 ##### insert "POST"
 
 ``` localhost:8080/usuario ```
-Body: ``` {
-	            "nome": "admin03",
-              "senha": "789",
-              "email": "test03@gmail.com"
-           } 
-      ``` 
+
+Body: ``` { ```
+	     ```"nome": "admin03", ```
+             ``` "senha": "789", ```
+             ```"email": "test03@gmail.com" ```
+      ``` } ```
+	   
 ##### delete "DELETE"
 
 ``` localhost:8080/usuario/{id} ```
@@ -35,10 +36,9 @@ Body: ``` {
 
 ``` localhost:8080/usuario/{id} ```
 
-Body: ``` {
-	            "nome": "admin03",
-              "senha": "789",
-              "email": "test03@gmail.com"
-           } 
-      ``` 
+Body: ``` { ```
+	     ```"nome": "admin03", ```
+             ``` "senha": "789", ```
+             ```"email": "test03@gmail.com" ```
+      ``` } ```
 
