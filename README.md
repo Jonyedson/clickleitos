@@ -12,33 +12,33 @@
 
 ##### findAll "GET"
 
-''' localhost:8080/usuario '''
+```  localhost:8080/usuario ```
 
 ##### findById "GET"
 
-´´´ localhost:8080/usuario/{id} ´´´
+``` localhost:8080/usuario/{id} ```
 
 ##### insert "POST"
 
-´´´ localhost:8080/usuario ´´´
-Body: ´´´ {
+``` localhost:8080/usuario ```
+Body: ``` {
 	            "nome": "admin03",
               "senha": "789",
               "email": "test03@gmail.com"
            } 
-      ´´´ 
+      ``` 
 ##### delete "DELETE"
 
-´´´ localhost:8080/usuario/{id} ´´´
+``` localhost:8080/usuario/{id} ```
 
 ##### update "PUT"
 
-´´´ localhost:8080/usuario/{id} ´´´
+``` localhost:8080/usuario/{id} ```
 
-Body: ´´´ {
+Body: ``` {
 	            "nome": "admin03",
               "senha": "789",
               "email": "test03@gmail.com"
            } 
-      ´´´ 
+      ``` 
 
