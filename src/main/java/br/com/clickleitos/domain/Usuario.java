@@ -14,18 +14,20 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String nome;
 	private String senha;
 	private String email;
-	
+
 	public Usuario() {
-		
+
 	}
 
-	public Usuario(Long id, String senha, String email) {
+	public Usuario(Long id, String nome, String senha, String email) {
 		super();
 		this.id = id;
 		this.senha = senha;
 		this.email = email;
+		this.nome = nome;
 	}
 
 	public Long getId() {
@@ -50,6 +52,15 @@ public class Usuario implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	@Override
