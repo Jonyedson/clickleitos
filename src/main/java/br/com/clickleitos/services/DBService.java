@@ -26,8 +26,8 @@ public class DBService {
 		Usuario usuario01 = new Usuario(null, "admin01", "123 ", "test01@gmail.com");
 		Usuario usuario02 = new Usuario(null, "admin02", "456", "test02@gmail.com");
 		
-		Unidade unidade01 = new Unidade(null, "000000000", "UPA - Rendeira ","-85433554", "-1453465", usuario01);
-		Unidade unidade02 = new Unidade(null, "000000000", "UPA - Salgado ","-84345788", "-123245345", usuario02);
+		Unidade unidade01 = new Unidade(null, "000000000", "UPA - Rendeiras ","-8.719084", "-35.970908", usuario01);
+		Unidade unidade02 = new Unidade(null, "000000000", "UPA - Salgado ","-8.619084", "-35.750808", usuario02);
 		
 		repositoryUsuario.saveAll(Arrays.asList(usuario01, usuario02));
 		repositoryUnidade.saveAll(Arrays.asList(unidade01, unidade02));

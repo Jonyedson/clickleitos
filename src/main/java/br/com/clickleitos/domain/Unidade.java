@@ -37,7 +37,7 @@ public class Unidade implements Serializable {
 		super();
 	}
 
-	public Unidade(Long id, String cnpj, String nome, String longitude, String latitude, Usuario usuario) {
+	public Unidade(Long id, String cnpj, String nome, String latitude, String longitude, Usuario usuario) {
 		super();
 		this.id = id;
 		this.cnpj = cnpj;
