@@ -8,17 +8,17 @@
 4. *maven*
 5. *H2*
 
-### Usuario routes
+## Usuario routes
 
-##### findAll "GET"
+### findAll "GET"
 
 ```/usuario ```
 
-##### findById **GET**
+### findById **GET**
 
 ```/usuario/{id} ```
 
-##### insert **POST**
+### insert **POST**
 
 ``` /usuario ```
 
@@ -31,11 +31,11 @@
 } 
 ```
 
-##### delete "DELETE"
+### delete "DELETE"
 
 ``` /usuario/{id} ```
 
-##### update "PUT"
+### update "PUT"
 
 ``` /usuario/{id} ```
 
