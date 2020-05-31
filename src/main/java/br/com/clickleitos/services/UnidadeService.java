@@ -3,34 +3,42 @@ package br.com.clickleitos.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import br.com.clickleitos.domain.Unidade;
 import br.com.clickleitos.domain.Usuario;
-import br.com.clickleitos.repositories.UsuarioRepository;
+import br.com.clickleitos.repositories.UnidadeRepository;
 import br.com.clickleitos.services.exceptions.DatabaseException;
 import br.com.clickleitos.services.exceptions.ResourceNotFoundException;
 
 @Service
-public class UsuarioService {
+public class UnidadeService {
 
 	@Autowired
-	private UsuarioRepository repository;
+	private UnidadeRepository repository;
+	
+	@Autowired UsuarioService service;
 
-	public List<Usuario> findAll() {
-		List<Usuario> list = repository.findAll();
+	public List<Unidade> findAll() {
+		List<Unidade> list = repository.findAll();
 		return list;
 	}
 
-	public Usuario findById(Long id) {
-		Optional<Usuario> obj = repository.findById(id);
+	public Unidade findById(Long id) {
+		Optional<Unidade> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
-
-	public Usuario insert(Usuario obj) {
+	
+	@Transactional
+	public Unidade insert(Unidade obj, Long id) {
+		Usuario usuario = service.findById(id);
 		obj.setId(null);
+		//obj.setUsuario(usuario);
 		obj = repository.save(obj);
 		return obj;
 	}
@@ -45,16 +53,27 @@ public class UsuarioService {
 		}
 	}
 
-	public Usuario update(Long id, Usuario obj) {
-		Usuario entity = findById(id);
+	public Unidade update(Long id, Unidade obj) {
+		Unidade entity = findById(id);
 		updateData(entity, obj);
 		return repository.save(entity);
 	}
 
-	private void updateData(Usuario entity, Usuario obj) {
+	private void updateData(Unidade entity, Unidade obj) {
 		if (obj.getNome() != null) {
 			entity.setNome(obj.getNome());
 
+		}
+		if (obj.getLatitude() != null) {
+			entity.setLatitude(obj.getLatitude());
+
+		}
+		if (obj.getLongitude() != null) {
+			entity.setLongitude(obj.getLongitude());
+
+		}
+		if (obj.getCnpj() != null) {
+			entity.setCnpj(obj.getCnpj());
 		}
 	}
 

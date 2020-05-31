@@ -6,30 +6,37 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Unidade implements Serializable{
+public class Unidade implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String cnpj;
 	private String nome;
-	private String imgUrl;
 	private String longitude;
 	private String latitude;
+	
+	@JsonIgnore
+	@OneToOne
+	@MapsId
+	private Usuario usuario;
 
 	public Unidade() {
 		super();
 	}
 
-	public Unidade(Long id, String cnpj, String nome, String imgUrl, String longitude, String latitude) {
+	public Unidade(Long id, String cnpj, String nome, String longitude, String latitude) {
 		super();
 		this.id = id;
 		this.cnpj = cnpj;
 		this.nome = nome;
-		this.imgUrl = imgUrl;
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}
@@ -58,14 +65,6 @@ public class Unidade implements Serializable{
 		this.nome = nome;
 	}
 
-	public String getImgUrl() {
-		return imgUrl;
-	}
-
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
-	}
-
 	public String getLongitude() {
 		return longitude;
 	}
@@ -80,6 +79,14 @@ public class Unidade implements Serializable{
 
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
