@@ -6,9 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Leitos implements Serializable {
+public class Leito implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -16,16 +20,22 @@ public class Leitos implements Serializable {
 	private Long id;
 	private Integer total;
 	private Integer disponiveis;
-
-	public Leitos() {
+	
+	@JsonIgnore
+	@OneToOne
+	@MapsId
+	private Unidade unidade;
+	
+	public Leito() {
 		super();
 	}
 
-	public Leitos(Long id, Integer total, Integer disponiveis) {
+	public Leito(Long id, Integer total, Integer disponiveis, Unidade unidade) {
 		super();
 		this.id = id;
 		this.total = total;
 		this.disponiveis = disponiveis;
+		this.unidade = unidade;
 	}
 
 	public Long getId() {
@@ -51,6 +61,15 @@ public class Leitos implements Serializable {
 	public void setDisponiveis(Integer disponiveis) {
 		this.disponiveis = disponiveis;
 	}
+	
+	
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
+	}
 
 	@Override
 	public int hashCode() {
@@ -68,7 +87,7 @@ public class Leitos implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Leitos other = (Leitos) obj;
+		Leito other = (Leito) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

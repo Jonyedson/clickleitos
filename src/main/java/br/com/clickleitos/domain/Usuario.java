@@ -1,13 +1,15 @@
 package br.com.clickleitos.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Usuario implements Serializable {
@@ -16,12 +18,13 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "")
 	private String nome;
 	private String senha;
 	private String email;
-	
-	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Unidade unidade;
+
+	@OneToMany(mappedBy = "usuario")
+	private Set<Unidade> unidades = new HashSet<>();
 
 	public Usuario() {
 
@@ -59,7 +62,6 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	
 	public String getNome() {
 		return nome;
 	}
@@ -67,13 +69,9 @@ public class Usuario implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public Unidade getUnidade() {
-		return unidade;
-	}
 
-	public void setUnidade(Unidade unidade) {
-		this.unidade = unidade;
+	public Set<Unidade> getUnidades() {
+		return unidades;
 	}
 
 	@Override

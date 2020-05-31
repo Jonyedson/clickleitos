@@ -19,12 +19,7 @@ public class TestConfig {
 	
 	@Bean
 	public boolean instantiateDatabase() throws ParseException {
-		try {
 		dbService.instantiateTestDatabase();
-		
-		}catch (DataIntegrityViolationException e) {
-			e.printStackTrace();
-		}
 		return true;
 	}
 }

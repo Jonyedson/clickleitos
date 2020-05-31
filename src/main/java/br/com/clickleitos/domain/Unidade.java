@@ -2,14 +2,14 @@ package br.com.clickleitos.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MapsId;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Unidade implements Serializable {
@@ -23,22 +23,25 @@ public class Unidade implements Serializable {
 	private String longitude;
 	private String latitude;
 	
-	@JsonIgnore
-	@OneToOne
-	@MapsId
+	@ManyToOne
+	@JoinColumn(name = "id.usuario")
 	private Usuario usuario;
-
+	
+	@OneToOne(mappedBy = "unidade", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Leito leito;
+	
 	public Unidade() {
 		super();
 	}
 
-	public Unidade(Long id, String cnpj, String nome, String longitude, String latitude) {
+	public Unidade(Long id, String cnpj, String nome, String longitude, String latitude, Usuario usuario) {
 		super();
 		this.id = id;
 		this.cnpj = cnpj;
 		this.nome = nome;
 		this.longitude = longitude;
 		this.latitude = latitude;
+		this.usuario = usuario;
 	}
 
 	public Long getId() {
@@ -87,6 +90,15 @@ public class Unidade implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+	
+	
+	public Leito getLeito() {
+		return leito;
+	}
+
+	public void setLeito(Leito leito) {
+		this.leito = leito;
 	}
 
 	@Override

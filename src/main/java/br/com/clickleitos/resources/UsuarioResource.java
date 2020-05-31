@@ -27,9 +27,6 @@ public class UsuarioResource {
 	@Autowired
 	private UsuarioService serviceUsuario;
 	
-	@Autowired
-	private UnidadeService serviceUnidade;
-
 	@GetMapping
 	public ResponseEntity<List<Usuario>> findAll() {
 		List<Usuario> list = serviceUsuario.findAll();
@@ -61,38 +58,6 @@ public class UsuarioResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	// routes of unidade
-	
-	@GetMapping(value = "/unidade")
-	public ResponseEntity<List<Unidade>> findAllUnidade(){
-		List<Unidade> list = serviceUnidade.findAll();
-		return ResponseEntity.ok().body(list);
-	}
-	
-	@GetMapping(value = "/{id}/unidade")
-	public ResponseEntity<Unidade> findByIdUnidade(@PathVariable Long id){
-		Unidade obj = serviceUnidade.findById(id);
-		return ResponseEntity.ok().body(obj);
-	}
-	
-	@PostMapping(value = "/{id}/unidade")
-	public ResponseEntity<Void> insertUnidade(@RequestBody Unidade obj, @PathVariable Long id) {
-		obj = serviceUnidade.insert(obj, id);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
-	}
-	
-	@DeleteMapping(value = "/{id}/unidade")
-	public ResponseEntity<Void> deleteUnidade(@PathVariable Long id) {
-		serviceUnidade.delete(id);
-		return ResponseEntity.noContent().build();
-	}
-	
-	@PutMapping(value = "/{id}/unidade")
-	public ResponseEntity<Void> updateUnidade(@PathVariable Long id, @RequestBody Unidade obj) {
-		obj = serviceUnidade.update(id, obj);
-		return ResponseEntity.noContent().build();
-	}
-	
+		
 	
 }
