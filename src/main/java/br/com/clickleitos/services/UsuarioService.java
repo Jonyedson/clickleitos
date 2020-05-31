@@ -54,7 +54,9 @@ public class UsuarioService {
 	private void updateData(Usuario entity, Usuario obj) {
 		if (obj.getNome() != null) {
 			entity.setNome(obj.getNome());
-
+		}
+		if (obj.getEmail() != null) {
+			entity.setEmail(obj.getEmail());
 		}
 	}
 

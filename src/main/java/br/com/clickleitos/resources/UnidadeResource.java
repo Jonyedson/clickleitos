@@ -26,7 +26,7 @@ public class UnidadeResource {
 
 	@Autowired
 	private UnidadeService serviceUnidade;
-	
+
 	@Autowired
 	private LeitoService serviceLeito;
 
@@ -42,10 +42,12 @@ public class UnidadeResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
+// receber corpo do leito e salvar
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Unidade obj) {
-		obj = serviceUnidade.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+	public ResponseEntity<Void> insert(@RequestBody Unidade unidade, @RequestBody Leito leito) {
+		unidade = serviceUnidade.insert(unidade);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(unidade.getId())
+				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
@@ -60,37 +62,22 @@ public class UnidadeResource {
 		obj = serviceUnidade.update(id, obj);
 		return ResponseEntity.noContent().build();
 	}
-	
-	// routes of leito
-	
-		@GetMapping(value = "/leito")
-		public ResponseEntity<List<Leito>> findAllUnidade(){
-			List<Leito> list = serviceLeito.findAll();
-			return ResponseEntity.ok().body(list);
-		}
-		
-		@GetMapping(value = "/{id}/leito")
-		public ResponseEntity<Leito> findByIdUnidade(@PathVariable Long id){
-			Leito obj = serviceLeito.findById(id);
-			return ResponseEntity.ok().body(obj);
-		}
-		
-		@PostMapping(value = "/{id}/leito")
-		public ResponseEntity<Void> insertUnidade(@RequestBody Leito obj, @PathVariable Long id) {
-			obj = serviceLeito.insert(obj, id);
-			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-			return ResponseEntity.created(uri).build();
-		}
-		
-		@DeleteMapping(value = "/{id}/leito")
-		public ResponseEntity<Void> deleteUnidade(@PathVariable Long id) {
-			serviceLeito.delete(id);
-			return ResponseEntity.noContent().build();
-		}
-		
-		@PutMapping(value = "/{id}/leito")
-		public ResponseEntity<Void> updateUnidade(@PathVariable Long id, @RequestBody Leito obj) {
-			obj = serviceLeito.update(id, obj);
-			return ResponseEntity.noContent().build();
-		}
+
+	@GetMapping(value = "/leito")
+	public ResponseEntity<List<Leito>> findAllUnidade() {
+		List<Leito> list = serviceLeito.findAll();
+		return ResponseEntity.ok().body(list);
+	}
+
+	@GetMapping(value = "/{id}/leito")
+	public ResponseEntity<Leito> findByIdUnidade(@PathVariable Long id) {
+		Leito obj = serviceLeito.findById(id);
+		return ResponseEntity.ok().body(obj);
+	}
+
+	@PutMapping(value = "/{id}/leito")
+	public ResponseEntity<Void> updateUnidade(@PathVariable Long id, @RequestBody Leito obj) {
+		obj = serviceLeito.update(id, obj);
+		return ResponseEntity.noContent().build();
+	}
 }

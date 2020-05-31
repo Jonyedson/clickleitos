@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Unidade implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -23,6 +25,7 @@ public class Unidade implements Serializable {
 	private String longitude;
 	private String latitude;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "id.usuario")
 	private Usuario usuario;
