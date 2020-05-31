@@ -12,20 +12,31 @@
 
 ### findAll "GET"
 
-```/usuario```
-```/unidade```
-```/unidade/leito```
+```
+/usuario
+
+/unidade
+
+unidade/leito
+```
 
 ### findById **GET**
 
-```/usuario/{id}```
-```/unidade/{id}```
-```/unidade/{id}/leito```
+```
+/usuario/{id}/
+
+/unidade/{id}
+
+/unidade/{id}/leito
+```
 
 ### insert **POST**
 
-```/usuario```
-```/unidade```
+```
+/usuario
+
+/unidade
+```
 
 **Body Usuario:**
 ```
@@ -35,7 +46,7 @@
     "email": "test03@gmail.com"
 } 
 ```
-**Body Undidae:**
+**Body Unidade:**
 ```
 {
     "cnpj": "000000000",
@@ -50,14 +61,21 @@
 ```
 ### delete "DELETE"
 
-```/usuario/{id}```
-```/unidade/{id}```
+```
+/usuario/{id}
+
+/unidade/{id}
+```
 
 ### update "PUT"
 
-```/usuario/{id}```
-```/unidade/{id}```
-```/unidade/{id}/leito```
+```
+/usuario/{id}
+
+/unidade/{id}
+
+/unidade/{id}/leito
+```
 
 **Body Usuario:**
 ``` 
