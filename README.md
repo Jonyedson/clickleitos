@@ -12,17 +12,17 @@
 
 ##### findAll "GET"
 
-```  localhost:8080/usuario ```
+```/usuario ```
 
 ##### findById **GET**
 
-``` localhost:8080/usuario/{id} ```
+```/usuario/{id} ```
 
 ##### insert **POST**
 
-``` localhost:8080/usuario ```
+``` /usuario ```
 
-Body: 
+**Body**: 
 ```
 {
     "nome": "admin03",
@@ -33,15 +33,18 @@ Body:
 
 ##### delete "DELETE"
 
-``` localhost:8080/usuario/{id} ```
+``` /usuario/{id} ```
 
 ##### update "PUT"
 
-``` localhost:8080/usuario/{id} ```
+``` /usuario/{id} ```
 
-Body: ``` { ```
-	     ```"nome": "admin03", ```
-             ``` "senha": "789", ```
-             ```"email": "test03@gmail.com" ```
-      ``` } ```
+**Body**:
+``` 
+{
+  "nome": "admin03",
+  "senha": "789",
+  "email": "test03@gmail.com"
+}
+```
 
