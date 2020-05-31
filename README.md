@@ -14,20 +14,23 @@
 
 ```  localhost:8080/usuario ```
 
-##### findById "GET"
+##### findById **GET**
 
 ``` localhost:8080/usuario/{id} ```
 
-##### insert "POST"
+##### insert **POST**
 
 ``` localhost:8080/usuario ```
 
-Body: ``` { ```
-	     ```"nome": "admin03", ```
-             ``` "senha": "789", ```
-             ```"email": "test03@gmail.com" ```
-      ``` } ```
-	   
+Body: 
+```
+{
+    "nome": "admin03",
+    "senha": "789",
+    "email": "test03@gmail.com"
+} 
+```
+
 ##### delete "DELETE"
 
 ``` localhost:8080/usuario/{id} ```
