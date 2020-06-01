@@ -1,15 +1,23 @@
 package br.com.clickleitos.domain;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import br.com.clickleitos.domain.enums.Profile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 
 @Entity
 public class Usuario implements Serializable {
@@ -18,13 +26,26 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "")
 	private String nome;
-	private String senha;
+
+	@Column(unique = true)
 	private String email;
+	@Column(unique = true)
+	@JsonIgnore
+	private String senha;
+
+	private String urlProfile;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PROFILES")
+	private Set<Integer> profiles = new HashSet<>();
 
 	@OneToMany(mappedBy = "usuario")
 	private Set<Unidade> unidades = new HashSet<>();
+
+	public Usuario(Long id) {
+		addProfile(Profile.USUARIO);
+	}
 
 	public Usuario() {
 
@@ -74,6 +95,17 @@ public class Usuario implements Serializable {
 		return unidades;
 	}
 
+	public Set<Profile> getProfiles() {
+		return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
+	}
+
+	public void addProfile(Profile profile) {
+		profiles.add(profile.getCode());
+	}
+
+	public Set<Integer> getProfilesNum() {
+		return profiles;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -97,5 +129,18 @@ public class Usuario implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("User [id=");
+		builder.append(id);
+		builder.append(", nome=");
+		builder.append(nome);
+		builder.append(", email=");
+		builder.append(email);
+		builder.append("]");
+		return builder.toString();
 	}
 }
