@@ -21,11 +21,10 @@ public class UsuarioS implements UserDetails {
 
     }
 
-    public UsuarioS(Long id, String email, String senha, Set<Profile> profiles) {
+    public UsuarioS(Long id, String email, String senha) {
         this.id = id;
         this.email = email;
         this.senha = senha;
-        this.authorities = profiles.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
     }
 
     public Long getId(){

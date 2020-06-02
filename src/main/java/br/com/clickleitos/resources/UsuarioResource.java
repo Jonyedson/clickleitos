@@ -3,6 +3,7 @@ package br.com.clickleitos.resources;
 import java.net.URI;
 import java.util.List;
 
+import br.com.clickleitos.domain.Leito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +27,9 @@ public class UsuarioResource {
 
 	@Autowired
 	private UsuarioService serviceUsuario;
+
+	@Autowired
+	private UnidadeService unidadeService;
 	
 	@GetMapping
 	public ResponseEntity<List<Usuario>> findAll() {
@@ -57,7 +61,4 @@ public class UsuarioResource {
 		obj = serviceUsuario.update(id, obj);
 		return ResponseEntity.noContent().build();
 	}
-	
-		
-	
 }

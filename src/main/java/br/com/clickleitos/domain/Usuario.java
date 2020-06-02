@@ -28,24 +28,13 @@ public class Usuario implements Serializable {
 	private Long id;
 	private String nome;
 
-	@Column(unique = true)
 	private String email;
-	@Column(unique = true)
-	@JsonIgnore
 	private String senha;
 
 	private String urlProfile;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PROFILES")
-	private Set<Integer> profiles = new HashSet<>();
-
 	@OneToMany(mappedBy = "usuario")
 	private Set<Unidade> unidades = new HashSet<>();
-
-	public Usuario(Long id) {
-		addProfile(Profile.USUARIO);
-	}
 
 	public Usuario() {
 
@@ -95,17 +84,6 @@ public class Usuario implements Serializable {
 		return unidades;
 	}
 
-	public Set<Profile> getProfiles() {
-		return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
-	}
-
-	public void addProfile(Profile profile) {
-		profiles.add(profile.getCode());
-	}
-
-	public Set<Integer> getProfilesNum() {
-		return profiles;
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

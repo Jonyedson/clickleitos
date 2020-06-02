@@ -3,6 +3,8 @@ package br.com.clickleitos.services;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.clickleitos.domain.Leito;
+import br.com.clickleitos.repositories.LeitoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,12 +15,19 @@ import br.com.clickleitos.domain.Usuario;
 import br.com.clickleitos.repositories.UnidadeRepository;
 import br.com.clickleitos.services.exceptions.DatabaseException;
 import br.com.clickleitos.services.exceptions.ResourceNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UnidadeService {
 
 	@Autowired
 	private UnidadeRepository repository;
+
+	@Autowired
+	private LeitoRepository leitoRepository;
+
+	@Autowired
+	private UsuarioService usuarioService;
 
 	public List<Unidade> findAll() {
 		List<Unidade> list = repository.findAll();
@@ -30,10 +39,18 @@ public class UnidadeService {
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	public Unidade insert(Unidade obj) {
-		obj.setId(null);
-		obj = repository.save(obj);
-		return obj;
+	public void insert(Unidade unidade, Leito leito, Long id) {
+		Usuario  usuario = usuarioService.findById(id);
+		unidade.setId(null);
+		unidade.setUsuario(usuario);
+		leito.setId(null);
+		unidade.setLeito(leito);
+		repository.save(unidade);
+	}
+	public Unidade insert(Unidade unidade) {
+		unidade.setId(null);
+		unidade = repository.save(unidade);
+		return unidade;
 	}
 
 	public void delete(Long id) {
@@ -46,10 +63,9 @@ public class UnidadeService {
 		}
 	}
 
-	public Unidade update(Long id, Unidade obj) {
+	public void update(Long id, Unidade obj) {
 		Unidade entity = findById(id);
 		updateData(entity, obj);
-		return repository.save(entity);
 	}
 
 	private void updateData(Unidade entity, Unidade obj) {
@@ -57,6 +73,24 @@ public class UnidadeService {
 			entity.setNome(obj.getNome());
 
 		}
+		if (obj.getCnpj() != null) {
+			entity.setCnpj(obj.getCnpj());
+
+		}
+		if (obj.getLatitude() != null) {
+			entity.setLatitude(obj.getLatitude());
+
+		}
+		if (obj.getLongitude() != null) {
+			entity.setLongitude(obj.getLongitude());
+
+		}if (obj.getUsuario() != null) {
+			entity.setUsuario(obj.getUsuario());
+
+		}
+
+
+
 	}
 
 }
