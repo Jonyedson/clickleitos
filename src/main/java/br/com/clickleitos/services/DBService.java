@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.clickleitos.domain.Leito;
@@ -21,24 +22,27 @@ public class DBService {
 	@Autowired
 	private UnidadeRepository repositoryUnidade;
 
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+
 	public void instantiateTestDatabase() throws ParseException{
 
-		Usuario usuario01 = new Usuario(null, "admin01", "123 ", "test01@gmail.com");
-		Usuario usuario02 = new Usuario(null, "admin02", "456", "test02@gmail.com");
-		
-		Unidade unidade01 = new Unidade(null, "000000000", "UPA - Rendeiras ","-8.719084", "-35.970908", usuario01);
-		Unidade unidade02 = new Unidade(null, "000000000", "UPA - Salgado ","-8.619084", "-35.750808", usuario02);
-		
-		repositoryUsuario.saveAll(Arrays.asList(usuario01, usuario02));
+		Unidade unidade01 = new Unidade(null,"UPA - Rendeiras " , "000000000",-8.719084, -35.970908);
+		Unidade unidade02 = new Unidade(null, "UPA - Salgado ", "000000000",-8.619084, -35.750808);
+
+		Usuario usuario01 = new Usuario(null, "admin01","435565565",  "test01@gmail.com", passwordEncoder.encode("123"), unidade01);
+		Usuario usuario02 = new Usuario(null, "admin02", "2343546", "test02@gmail.com",passwordEncoder.encode("456") , unidade02);
+
 		repositoryUnidade.saveAll(Arrays.asList(unidade01, unidade02));
-		
+		repositoryUsuario.saveAll(Arrays.asList(usuario01, usuario02));
+
 		Leito leito01 = new Leito(null, 100, 20, unidade01);
 		unidade01.setLeito(leito01);
 		Leito leito02 = new Leito(null, 100, 20, unidade02);
 		unidade02.setLeito(leito02);
 
 		repositoryUnidade.saveAll(Arrays.asList(unidade01, unidade02));
-		
+
 		
 
 	}

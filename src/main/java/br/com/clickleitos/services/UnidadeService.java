@@ -24,10 +24,7 @@ public class UnidadeService {
 	private UnidadeRepository repository;
 
 	@Autowired
-	private LeitoRepository leitoRepository;
-
-	@Autowired
-	private UsuarioService usuarioService;
+	private LeitoService leitoService;
 
 	public List<Unidade> findAll() {
 		List<Unidade> list = repository.findAll();
@@ -39,17 +36,12 @@ public class UnidadeService {
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	public void insert(Unidade unidade, Leito leito, Long id) {
-		Usuario  usuario = usuarioService.findById(id);
-		unidade.setId(null);
-		unidade.setUsuario(usuario);
-		leito.setId(null);
-		unidade.setLeito(leito);
-		repository.save(unidade);
-	}
-	public Unidade insert(Unidade unidade) {
-		unidade.setId(null);
+	//Long id, String cnpj, String nome, Double latitude, Double longitude
+	public Unidade insert(Unidade obj) {
+		Leito leito = obj.getLeito();
+		Unidade unidade = new Unidade(null, obj.getNome(), obj.getCnpj(), obj.getLatitude(), obj.getLongitude());
 		unidade = repository.save(unidade);
+
 		return unidade;
 	}
 
@@ -84,13 +76,6 @@ public class UnidadeService {
 		if (obj.getLongitude() != null) {
 			entity.setLongitude(obj.getLongitude());
 
-		}if (obj.getUsuario() != null) {
-			entity.setUsuario(obj.getUsuario());
-
 		}
-
-
-
 	}
-
 }

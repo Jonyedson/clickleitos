@@ -1,10 +1,8 @@
 package br.com.clickleitos.domain.enums;
 
 public enum Profile {
-    ADMIN_SYSTEM(1 , "ROLE_ADMIN_SYSTEM"),
-    ADMIN_UNIDADE(2,"ROLE_ADMIN_UNIDADE"),
-    ADMIN_LEITO(3,"ROLE_ADMIN_LEITO"),
-    USUARIO(4,"ROLE_USUARIO");
+    ADMIN(1,"ROLE_ADMIN"),
+    USUARIO(2,"ROLE_USUARIO");
 
     private int code;
     private String description;

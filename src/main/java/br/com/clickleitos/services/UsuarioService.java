@@ -3,9 +3,11 @@ package br.com.clickleitos.services;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.clickleitos.domain.Unidade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.clickleitos.domain.Usuario;
@@ -18,6 +20,12 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository repository;
+
+	@Autowired
+	private UnidadeService unidadeService;
+
+	@Autowired
+	private BCryptPasswordEncoder passEncoder;
 
 	public List<Usuario> findAll() {
 		List<Usuario> list = repository.findAll();
@@ -58,6 +66,22 @@ public class UsuarioService {
 		if (obj.getEmail() != null) {
 			entity.setEmail(obj.getEmail());
 		}
+		if (obj.getCpf() != null) {
+			entity.setCpf(obj.getCpf());
+		}
+		if (obj.getStatus() != null) {
+			entity.setStatus(obj.getStatus());
+		}
+		if (obj.getUnidade() != null) {
+			entity.setUnidade(obj.getUnidade());
+		}
+	}
+	//Long id, String nome,String cpf, String email, String senha, Unidade unidade
+	public Usuario encoPass(Usuario obj){
+		Unidade unidade = unidadeService.findById(obj.getUnidade().getId());
+		Usuario usuario = new Usuario(null, obj.getNome(), obj.getCpf(), obj.getEmail(),passEncoder.encode(obj.getSenha()), unidade);
+
+		return usuario;
 	}
 
 }

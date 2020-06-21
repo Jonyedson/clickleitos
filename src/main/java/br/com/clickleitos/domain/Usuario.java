@@ -1,17 +1,10 @@
 package br.com.clickleitos.domain;
 
 import br.com.clickleitos.domain.enums.Profile;
+import br.com.clickleitos.domain.enums.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -26,26 +19,33 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	private String nome;
-
-	private String email;
+	private String cpf;
 	private String senha;
+	private String email;
+	private Status status;
 
-	private String urlProfile;
+	private Profile profile;
 
-	@OneToMany(mappedBy = "usuario")
-	private Set<Unidade> unidades = new HashSet<>();
+
+	@ManyToOne
+	@JoinColumn(name = "id.unidade")
+	private Unidade unidade;
 
 	public Usuario() {
 
 	}
 
-	public Usuario(Long id, String nome, String senha, String email) {
-		super();
+	public Usuario(Long id, String nome,String cpf, String email, String senha, Unidade unidade) {
 		this.id = id;
-		this.senha = senha;
-		this.email = email;
 		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+		this.cpf = cpf;
+		this.unidade = unidade;
+		this.profile = Profile.USUARIO;
+		this.status = Status.INATIVO;
 	}
 
 	public Long getId() {
@@ -56,12 +56,12 @@ public class Usuario implements Serializable {
 		this.id = id;
 	}
 
-	public String getSenha() {
-		return senha;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getEmail() {
@@ -72,16 +72,44 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getSenha() {
+		return senha;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
-	public Set<Unidade> getUnidades() {
-		return unidades;
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
 	}
 
 	@Override
@@ -107,18 +135,5 @@ public class Usuario implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("User [id=");
-		builder.append(id);
-		builder.append(", nome=");
-		builder.append(nome);
-		builder.append(", email=");
-		builder.append(email);
-		builder.append("]");
-		return builder.toString();
 	}
 }

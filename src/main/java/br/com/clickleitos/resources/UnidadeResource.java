@@ -33,20 +33,23 @@ public class UnidadeResource {
 
 	@GetMapping
 	public ResponseEntity<List<Unidade>> findAll() {
+
 		List<Unidade> list = serviceUnidade.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	//one
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Unidade> findById(@PathVariable Long id) {
+	public ResponseEntity<Unidade> findByIdUnidade(@PathVariable Long id) {
 		Unidade obj = serviceUnidade.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Unidade unidade) {
-		unidade = serviceUnidade.insert(unidade);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(unidade.getId())
+	public ResponseEntity<Void> insert(@RequestBody Unidade obj) {
+		Leito leito = obj.getLeito();
+		obj = serviceUnidade.insert(obj);
+		serviceLeito.insert(leito, obj.getId());
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
@@ -58,33 +61,20 @@ public class UnidadeResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Unidade obj) {
+	public ResponseEntity<Void> updateUnidade(@PathVariable Long id, @RequestBody Unidade obj) {
 		serviceUnidade.update(id, obj);
 		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping(value = "/{id}/leito")
-	public ResponseEntity<Leito> findByIdUnidade(@PathVariable Long id) {
+	public ResponseEntity<Leito> findById(@PathVariable Long id) {
 		Leito obj = serviceLeito.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@GetMapping(value = "/leito")
-	public ResponseEntity<List<Leito>> findAllUnidade() {
-		List<Leito> list = serviceLeito.findAll();
-		return ResponseEntity.ok().body(list);
-	}
 	@PutMapping(value = "/{id}/leito")
-	public ResponseEntity<Void> updateLeito(@PathVariable Long id, @RequestBody Leito obj) {
-		obj = serviceLeito.update(id, obj);
+	public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Leito obj) {
+		serviceLeito.update(id, obj);
 		return ResponseEntity.noContent().build();
-	}
-
-	@PostMapping(value = "/{id}/leito")
-	public ResponseEntity<Void> insertLeito(@RequestBody Leito leito, @PathVariable Long id) {
-		leito = serviceLeito.insert(leito, id);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(leito.getId())
-				.toUri();
-		return ResponseEntity.created(uri).build();
 	}
 }

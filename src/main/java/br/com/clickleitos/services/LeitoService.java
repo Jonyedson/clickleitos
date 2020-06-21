@@ -24,11 +24,6 @@ public class LeitoService {
 
 	@Autowired
 	private UnidadeService service;
-	
-	public List<Leito> findAll() {
-		List<Leito> list = repository.findAll();
-		return list;
-	}
 
 	public Leito findById(Long id) {
 		Optional<Leito> obj = repository.findById(id);
@@ -42,16 +37,6 @@ public class LeitoService {
 		obj.setUnidade(unidade);
 		obj = repository.save(obj);
 		return obj;
-	}
-
-	public void delete(Long id) {
-		try {
-			repository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException(e.getMessage());
-		}
 	}
 	
 	public Leito update(Long id, Leito obj) {

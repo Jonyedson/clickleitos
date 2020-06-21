@@ -1,17 +1,13 @@
 package br.com.clickleitos.domain;
 
-import java.io.Serializable;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.*;
+
 
 @Entity
 public class Unidade implements Serializable {
@@ -22,14 +18,13 @@ public class Unidade implements Serializable {
 	private Long id;
 	private String cnpj;
 	private String nome;
-	private String longitude;
-	private String latitude;
-	
+	private Double longitude;
+	private Double latitude;
 	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "id.usuario")
-	private Usuario usuario;
-	
+	@OneToMany(mappedBy = "unidade")
+	private Set<Usuario> usuarios = new HashSet<>();
+
+
 	@OneToOne(mappedBy = "unidade", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Leito leito;
 	
@@ -37,14 +32,13 @@ public class Unidade implements Serializable {
 		super();
 	}
 
-	public Unidade(Long id, String cnpj, String nome, String latitude, String longitude, Usuario usuario) {
+	public Unidade(Long id, String nome , String cnpj, Double latitude, Double longitude) {
 		super();
 		this.id = id;
 		this.cnpj = cnpj;
 		this.nome = nome;
 		this.longitude = longitude;
 		this.latitude = latitude;
-		this.usuario = usuario;
 	}
 
 	public Long getId() {
@@ -71,31 +65,23 @@ public class Unidade implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 
-	public String getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-	
-	
 	public Leito getLeito() {
 		return leito;
 	}
