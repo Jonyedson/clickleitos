@@ -9,7 +9,8 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class UsuarioS implements UserDetails {
+public class UsuarioDetails implements UserDetails {
+
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -17,14 +18,15 @@ public class UsuarioS implements UserDetails {
     private String senha;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UsuarioS() {
+    public UsuarioDetails() {
 
     }
 
-    public UsuarioS(Long id, String email, String senha) {
+    public UsuarioDetails(Long id, String email, String senha, Set<Profile> profiles) {
         this.id = id;
         this.email = email;
         this.senha = senha;
+        this.authorities = profiles.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toSet());
     }
 
     public Long getId(){
@@ -68,4 +70,5 @@ public class UsuarioS implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

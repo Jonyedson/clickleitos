@@ -1,12 +1,12 @@
 package br.com.clickleitos.services;
 
-import br.com.clickleitos.security.UsuarioS;
+import br.com.clickleitos.security.UsuarioDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class UsuarioServiceS {
-    public static UsuarioS authenticated(){
+    public static UsuarioDetails authenticated(){
         try{
-            return (UsuarioS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }catch (Exception  e){
             return null;
         }

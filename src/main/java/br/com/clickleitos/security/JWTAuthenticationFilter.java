@@ -18,8 +18,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
+public class JWTAuthenticationFilter /*extends UsernamePasswordAuthenticationFilter */{
+/*
     private AuthenticationManager authenticationManager;
 
     private JWTProvider jwtUtil;
@@ -32,28 +32,30 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.jwtUtil = jwtUtil;
     }
 
+    //Validação da senhas enviadas pelo front
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest req,
-                                                HttpServletResponse res) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
 
         try {
             CredentialDto credential = new ObjectMapper()
                     .readValue(req.getInputStream(), CredentialDto.class);
 
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(credential.getEmail(), credential.getSenha(), new ArrayList<>());
-
-            Authentication auth = authenticationManager.authenticate(authToken);
-            return auth;
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    credential.getEmail(), credential.getSenha(), new ArrayList<>());
+            Authentication authenticate = authenticationManager.authenticate(authToken);
+            return authenticate;
         }
         catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+    //Enviar token caso a validação seja ok
     @Override
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
+
 
         String username = ((UsuarioS) auth.getPrincipal()).getUsername();
         Long id = ((UsuarioS) auth.getPrincipal()).getId();
@@ -81,4 +83,5 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     + "\"path\": \"/login\"}";
         }
     }
+    */
 }

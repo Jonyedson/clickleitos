@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Component
 public class JWTProvider {
-
+    /*
     @Value("${jwt.secret}")
     private String secret;
 
@@ -22,13 +22,14 @@ public class JWTProvider {
     private Long expiration;
 
     private UsuarioService usuarioService;
-
+    //Cunstruindo o Token
     public String generateToken(String username,Long id) {
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setSubject(username).claim("id", id)
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(SignatureAlgorithm.HS512, secret.getBytes())
                 .compact();
+        return token;
     }
 
     public Integer getIdDoUsuario(String token) {
@@ -72,4 +73,6 @@ public class JWTProvider {
     public String getTokenFromRequest(HttpServletRequest request) {
         return request.getHeader("Authorization").replace("Bearer ", "");
     }
+
+     */
 }

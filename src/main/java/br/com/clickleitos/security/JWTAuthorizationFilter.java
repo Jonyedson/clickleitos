@@ -13,8 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+public class JWTAuthorizationFilter /*extends BasicAuthenticationFilter */{
 
+    /*
     private JWTProvider jwtProvider;
 
     private UserDetailsService userDetailsService;
@@ -28,16 +29,17 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain chain) throws IOException, ServletException {
+                                    FilterChain filterChain) throws IOException, ServletException {
+        //verifica o token
+        String authorizationHeader = request.getHeader("Authorization");
 
-        String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Bearer ")) {
-            UsernamePasswordAuthenticationToken auth = getAuthentication(header.substring(7));
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            UsernamePasswordAuthenticationToken auth = getAuthentication(authorizationHeader.substring(7));
             if (auth != null) {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
@@ -48,6 +50,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         }
         return null;
     }
-
+    */
 }
 

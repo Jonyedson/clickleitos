@@ -22,13 +22,16 @@ public class Usuario implements Serializable {
 
 	private String nome;
 	private String cpf;
+	@JsonIgnore
 	private String senha;
 	private String email;
 	private Status status;
 
-	private Profile profile;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PROFILES")
+	private Set<Integer> profiles = new HashSet<>();
 
-
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "id.unidade")
 	private Unidade unidade;
@@ -44,7 +47,7 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 		this.cpf = cpf;
 		this.unidade = unidade;
-		this.profile = Profile.USUARIO;
+		addProfile(Profile.USUARIO);
 		this.status = Status.INATIVO;
 	}
 
@@ -88,14 +91,6 @@ public class Usuario implements Serializable {
 		this.cpf = cpf;
 	}
 
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
-
 	public Status getStatus() {
 		return status;
 	}
@@ -110,6 +105,13 @@ public class Usuario implements Serializable {
 
 	public void setUnidade(Unidade unidade) {
 		this.unidade = unidade;
+	}
+
+	public Set<Profile> getProfiles() {
+		return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
+	}
+	public void addProfile(Profile profile) {
+		profiles.add(profile.getCode());
 	}
 
 	@Override
@@ -135,5 +137,18 @@ public class Usuario implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Usuario [id=");
+		builder.append(id);
+		builder.append(", nome=");
+		builder.append(nome);
+		builder.append(", email=");
+		builder.append(email);
+		builder.append("]");
+		return builder.toString();
 	}
 }
