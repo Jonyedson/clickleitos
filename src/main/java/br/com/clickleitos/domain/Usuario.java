@@ -25,10 +25,13 @@ public class Usuario implements Serializable {
 	@JsonIgnore
 	private String senha;
 	private String email;
+	@JsonIgnore
 	private Status status;
 
+
 	@ElementCollection(fetch = FetchType.EAGER)
-	private Set<Profile> profiles = new HashSet<>();
+	@CollectionTable(name = "PROFILES")
+	private Set<Integer> profiles = new HashSet<>();
 
 	@JsonIgnore
 	@ManyToOne
@@ -106,14 +109,18 @@ public class Usuario implements Serializable {
 	}
 
 	public Set<Profile> getProfiles() {
-		return profiles;
+		return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
 	}
 
-	public void setProfiles(Set<Profile> profiles) {
+	public void setProfiles(Set<Integer> profiles) {
 		this.profiles = profiles;
 	}
 	public void addProfile(Profile profile) {
-		profiles.add(profile);
+		profiles.add(profile.getCode());
+	}
+
+	public Set<Integer> getProfilesNum() {
+		return profiles;
 	}
 
 	@Override
@@ -141,16 +148,4 @@ public class Usuario implements Serializable {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Usuario [id=");
-		builder.append(id);
-		builder.append(", nome=");
-		builder.append(nome);
-		builder.append(", email=");
-		builder.append(email);
-		builder.append("]");
-		return builder.toString();
-	}
 }

@@ -52,6 +52,9 @@ public class UsuarioDetails implements UserDetails {
         this.password = password;
     }
 
+    public boolean hasRole(Profile profile) {
+        return getAuthorities().contains(new SimpleGrantedAuthority(profile.getDescription()));
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

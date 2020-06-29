@@ -2,11 +2,12 @@ package br.com.clickleitos.config;
 
 import br.com.clickleitos.security.jwt.JwtAuthenticationFilter;
 import br.com.clickleitos.security.jwt.JwtAuthorizationFilter;
+import br.com.clickleitos.security.jwt.JwtProvider;
+import br.com.clickleitos.security.service.UsuarioDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,7 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.passwordEncoder = passwordEncoder;
     }
 
-
+    @Autowired
+    private JwtProvider jwtProvider;
     @Qualifier("usuarioDetailsService")
     @Autowired
     private UserDetailsService userDetailsService;
@@ -61,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                .addFilterAfter(new JwtAuthorizationFilter(), JwtAuthenticationFilter.class)
+                .addFilterAfter(new JwtAuthorizationFilter(jwtProvider, (UsuarioDetailsService) userDetailsService), JwtAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated();
