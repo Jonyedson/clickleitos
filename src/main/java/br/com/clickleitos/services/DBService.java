@@ -3,6 +3,7 @@ package br.com.clickleitos.services;
 import java.text.ParseException;
 import java.util.Arrays;
 
+import br.com.clickleitos.domain.enums.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,10 @@ public class DBService {
 		Unidade unidade01 = new Unidade(null,"UPA - Rendeiras " , "000000000",-8.719084, -35.970908);
 		Unidade unidade02 = new Unidade(null, "UPA - Salgado ", "000000000",-8.619084, -35.750808);
 
-		Usuario usuario01 = new Usuario(null, "admin01","435565565",  "test01@gmail.com",passwordEncoder.encode("123"), unidade01);
-		Usuario usuario02 = new Usuario(null, "admin02", "2343546", "test02@gmail.com","456" , unidade02);
+		Usuario usuario01 = new Usuario(null, "admin01","435565565",  "jhon@gmail.com",passwordEncoder.encode("password"), unidade01);
+		Usuario usuario02 = new Usuario(null, "admin02", "2343546", "test02@gmail.com",passwordEncoder.encode("password") , unidade02);
 
+		usuario01.addProfile(Profile.ADMIN);
 		repositoryUnidade.saveAll(Arrays.asList(unidade01, unidade02));
 		repositoryUsuario.saveAll(Arrays.asList(usuario01, usuario02));
 

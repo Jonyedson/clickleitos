@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Component
 public class JWTProvider {
-    /*
+
     @Value("${jwt.secret}")
     private String secret;
 
@@ -73,6 +73,4 @@ public class JWTProvider {
     public String getTokenFromRequest(HttpServletRequest request) {
         return request.getHeader("Authorization").replace("Bearer ", "");
     }
-
-     */
 }

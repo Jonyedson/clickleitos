@@ -2,7 +2,8 @@ package br.com.clickleitos.domain.enums;
 
 public enum Profile {
     ADMIN(1,"ROLE_ADMIN"),
-    USUARIO(2,"ROLE_USUARIO");
+    USUARIO(2,"ROLE_USUARIO"),
+    ADMIN_UNIDADE(3, "ROLE_UNIDADE");
 
     private int code;
     private String description;
@@ -11,6 +12,7 @@ public enum Profile {
         this.code = code;
         this.description = description;
     }
+
 
     public int getCode() {
         return code;

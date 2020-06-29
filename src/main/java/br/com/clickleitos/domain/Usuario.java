@@ -28,15 +28,14 @@ public class Usuario implements Serializable {
 	private Status status;
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PROFILES")
-	private Set<Integer> profiles = new HashSet<>();
+	private Set<Profile> profiles = new HashSet<>();
 
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "id.unidade")
 	private Unidade unidade;
 
-	public Usuario() {
+	public Usuario( ) {
 
 	}
 
@@ -47,7 +46,6 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 		this.cpf = cpf;
 		this.unidade = unidade;
-		addProfile(Profile.USUARIO);
 		this.status = Status.INATIVO;
 	}
 
@@ -108,10 +106,14 @@ public class Usuario implements Serializable {
 	}
 
 	public Set<Profile> getProfiles() {
-		return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
+		return profiles;
+	}
+
+	public void setProfiles(Set<Profile> profiles) {
+		this.profiles = profiles;
 	}
 	public void addProfile(Profile profile) {
-		profiles.add(profile.getCode());
+		profiles.add(profile);
 	}
 
 	@Override

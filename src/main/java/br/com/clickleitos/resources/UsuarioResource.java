@@ -28,7 +28,8 @@ public class UsuarioResource {
 	
 	@Autowired
 	private UsuarioService serviceUsuario;
-	
+
+
 	@GetMapping
 	public ResponseEntity<List<Usuario>> findAll() {
 		List<Usuario> list = serviceUsuario.findAll();

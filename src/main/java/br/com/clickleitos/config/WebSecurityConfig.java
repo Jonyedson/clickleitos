@@ -1,5 +1,7 @@
 package br.com.clickleitos.config;
 
+import br.com.clickleitos.security.jwt.JwtAuthenticationFilter;
+import br.com.clickleitos.security.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
@@ -23,8 +26,6 @@ import java.util.Arrays;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private Environment env;
 
     private final  PasswordEncoder passwordEncoder;
 
@@ -37,12 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("usuarioDetailsService")
     @Autowired
     private UserDetailsService userDetailsService;
-    /*
-
-
-    @Autowired
-    private JWTProvider jwtProvider;
-
 
 
     private static final String[] PUBLIC_MATCHERS = {
@@ -57,32 +52,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/unidade/**",
             "/auth/forgot/**",
     };
-*/
+
     @Override   
     protected void configure(HttpSecurity http)throws Exception{
 
-        //entrar no banco de dados teste
-        if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
-            http.headers().frameOptions().disable();
-        }
-
-        http
-                .cors().and()
-                .authorizeRequests().antMatchers("/").permitAll()
-                .anyRequest().authenticated()
+        http.cors().and().csrf().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .httpBasic();
-
-        /*httpSecurity.cors().and().csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtProvider))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtProvider, userDetailsService))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilterAfter(new JwtAuthorizationFilter(), JwtAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers(PUBLIC_MATCHERS).permitAll()
-                .antMatchers(PUBLIC_MATCHERS_POST).permitAll()
+                .antMatchers("/").permitAll()
                 .anyRequest().authenticated();
 
-         */
+
     }
 
 
