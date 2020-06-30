@@ -15,10 +15,10 @@ import java.util.Date;
 @Component
 public class JWTProvider {
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secrett}")
     private String secret;
 
-    @Value("${jwt.expiration}")
+    @Value("${jwt.expiratin}")
     private Long expiration;
 
     private UsuarioService usuarioService;

@@ -19,71 +19,37 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
 
-    public JwtAuthorizationFilter(JwtProvider jwtProvide, UsuarioDetailsService uuarioDetailsService) {
+    public JwtAuthorizationFilter(JwtProvider jwtProvide, UserDetailsService userDetailsService) {
         this.jwtProvider = jwtProvide;
-        this.userDetailsService = uuarioDetailsService;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        /*
-        String authorizationHeader = request.getHeader("Authorization");
 
-        if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request,response);
-            return;
-        }
-                String token = authorizationHeader.replace("Bearer ", "");
-       */
-        String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Bearer ")) {
-            UsernamePasswordAuthenticationToken auth = getAuthentication(header.substring(7));
+            UsernamePasswordAuthenticationToken auth = getAuthentication(getJwt(request));
             if (auth != null) {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
-        }
+
         filterChain.doFilter(request, response);
-
-
-
-
-
-        /*
-
-        try{
-
-            String key = "sfdghfgdsregfsdgfsdgsfdghfgdsregfsdgfsdgdfgfsfdghfgdsregfsdgfsdgdfgfsfdghfgdsregfsdgfsdgdfgfsfdghfgdsregfsdgfsdgdfgfsfdghfgdsregfsdgfsdgdfgfdfgf";
-            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(key.getBytes())).parseClaimsJws(token);
-
-            Claims body = claimsJws.getBody();
-            String email = body.getSubject();
-
-            List<Map<String, String>> authorities = (List<Map<String, String>>) body.get("authorities");
-
-
-
-            Set<SimpleGrantedAuthority> simpleGrantedAuthoritySet = authorities.stream().map(m -> new SimpleGrantedAuthority("ROLE_ADMIN")).collect(Collectors.toSet());
-
-            Authentication authentication  = new UsernamePasswordAuthenticationToken(
-                    email,
-                    null,
-                    simpleGrantedAuthoritySet
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        }catch (JwtException e){
-            throw new IllegalStateException(String.format("Token invalido %s", token));
-        }
-        filterChain.doFilter(request, response);
-
-         */
     }
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
         if (jwtProvider.validToken(token)) {
-            String username = jwtProvider.getUsername(token);
-            UsuarioDetails user = (UsuarioDetails) userDetailsService.loadUserByUsername(username);
-            return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            String username = jwtProvider.getEmail(token);
+            UsuarioDetails usuarioDetails = (UsuarioDetails) userDetailsService.loadUserByUsername(username);
+            return new UsernamePasswordAuthenticationToken(usuarioDetails, null, usuarioDetails.getAuthorities());
         }
+        return null;
+    }
+    private String getJwt(HttpServletRequest request) {
+        String Header = request.getHeader("Authorization");
+
+        if (Header != null && Header.startsWith("Bearer ")) {
+            String token = Header.replace("Bearer ", "");
+            return token;
+        }
+
         return null;
     }
 }

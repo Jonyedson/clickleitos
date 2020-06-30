@@ -20,8 +20,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtAuthenticationFilter /*extends UsernamePasswordAuthenticationFilter*/ {
 
+/*
     private final AuthenticationManager authenticationManager;
 
 
@@ -62,4 +63,5 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .compact();
         response.addHeader("Authorization", "Bearer " + token);
     }
+    */
 }
