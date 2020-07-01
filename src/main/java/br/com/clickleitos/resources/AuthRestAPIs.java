@@ -4,7 +4,6 @@ import br.com.clickleitos.message.request.LoginForm;
 import br.com.clickleitos.message.response.JwtResponse;
 import br.com.clickleitos.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

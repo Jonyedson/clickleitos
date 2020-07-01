@@ -14,11 +14,11 @@ import java.util.Date;
 public class JwtProvider {
 
 
-    @Value("${jwt.secrett}")
+    @Value("${jwt.secret}")
     private String jwtSecret;
 
 
-    @Value("${jwt.expiratin}")
+    @Value("${jwt.expiration}")
     private Long jwtExpiration;
 
 
