@@ -2,8 +2,6 @@ package br.com.clickleitos.domain;
 
 import br.com.clickleitos.domain.enums.Profile;
 import br.com.clickleitos.domain.enums.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -22,10 +20,8 @@ public class Usuario implements Serializable {
 
 	private String nome;
 	private String cpf;
-	@JsonIgnore
 	private String senha;
 	private String email;
-	@JsonIgnore
 	private Status status;
 
 
@@ -33,7 +29,6 @@ public class Usuario implements Serializable {
 	@CollectionTable(name = "PROFILES")
 	private Set<Integer> profiles = new HashSet<>();
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "id.unidade")
 	private Unidade unidade;

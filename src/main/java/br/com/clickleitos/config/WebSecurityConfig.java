@@ -1,5 +1,6 @@
 package br.com.clickleitos.config;
 
+import br.com.clickleitos.security.jwt.JwtAuthEntryPoint;
 import br.com.clickleitos.security.jwt.JwtAuthenticationFilter;
 import br.com.clickleitos.security.jwt.JwtAuthorizationFilter;
 import br.com.clickleitos.security.jwt.JwtProvider;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -39,14 +41,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtProvider jwtProvider;
+
     @Qualifier("usuarioDetailsService")
     @Autowired
     private UserDetailsService userDetailsService;
 
-
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**",
-            "/usuario/**",
+            "/usuario",
             "/unidade/**"
 
     };
@@ -66,6 +68,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers(PUBLIC_MATCHERS).permitAll()
+                .antMatchers(HttpMethod.POST,PUBLIC_MATCHERS_POST).permitAll()
                 .anyRequest().authenticated().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

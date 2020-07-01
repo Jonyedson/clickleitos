@@ -29,13 +29,13 @@ public class UsuarioResource {
 	@Autowired
 	private UsuarioService serviceUsuario;
 
-	@PreAuthorize("hasAnyRole('ROLE_UNIDADE')")
+
 	@GetMapping
 	public ResponseEntity<List<Usuario>> findAll() {
 		List<Usuario> list = serviceUsuario.findAll();
 		return ResponseEntity.ok().body(list);
 	}
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Usuario> findById(@PathVariable Long id) {
 		Usuario obj = serviceUsuario.findById(id);
