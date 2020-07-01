@@ -2,8 +2,6 @@ package br.com.clickleitos.domain;
 
 import br.com.clickleitos.domain.enums.Profile;
 import br.com.clickleitos.domain.enums.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -26,14 +24,16 @@ public class Usuario implements Serializable {
 	private String email;
 	private Status status;
 
-	private Profile profile;
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PROFILES")
+	private Set<Integer> profiles = new HashSet<>();
 
 	@ManyToOne
 	@JoinColumn(name = "id.unidade")
 	private Unidade unidade;
 
-	public Usuario() {
+	public Usuario( ) {
 
 	}
 
@@ -44,7 +44,6 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 		this.cpf = cpf;
 		this.unidade = unidade;
-		this.profile = Profile.USUARIO;
 		this.status = Status.INATIVO;
 	}
 
@@ -88,14 +87,6 @@ public class Usuario implements Serializable {
 		this.cpf = cpf;
 	}
 
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
-
 	public Status getStatus() {
 		return status;
 	}
@@ -110,6 +101,21 @@ public class Usuario implements Serializable {
 
 	public void setUnidade(Unidade unidade) {
 		this.unidade = unidade;
+	}
+
+	public Set<Profile> getProfiles() {
+		return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
+	}
+
+	public void setProfiles(Set<Integer> profiles) {
+		this.profiles = profiles;
+	}
+	public void addProfile(Profile profile) {
+		profiles.add(profile.getCode());
+	}
+
+	public Set<Integer> getProfilesNum() {
+		return profiles;
 	}
 
 	@Override
@@ -136,4 +142,5 @@ public class Usuario implements Serializable {
 			return false;
 		return true;
 	}
+
 }

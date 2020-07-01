@@ -24,8 +24,6 @@ public class UsuarioService {
 	@Autowired
 	private UnidadeService unidadeService;
 
-	@Autowired
-	private BCryptPasswordEncoder passEncoder;
 
 	public List<Usuario> findAll() {
 		List<Usuario> list = repository.findAll();
@@ -79,7 +77,7 @@ public class UsuarioService {
 	//Long id, String nome,String cpf, String email, String senha, Unidade unidade
 	public Usuario encoPass(Usuario obj){
 		Unidade unidade = unidadeService.findById(obj.getUnidade().getId());
-		Usuario usuario = new Usuario(null, obj.getNome(), obj.getCpf(), obj.getEmail(),passEncoder.encode(obj.getSenha()), unidade);
+		Usuario usuario = new Usuario(null, obj.getNome(), obj.getCpf(), obj.getEmail(),obj.getSenha(), unidade);
 
 		return usuario;
 	}

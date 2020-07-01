@@ -3,8 +3,9 @@ package br.com.clickleitos.services;
 import java.text.ParseException;
 import java.util.Arrays;
 
+import br.com.clickleitos.domain.enums.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.clickleitos.domain.Leito;
@@ -16,23 +17,30 @@ import br.com.clickleitos.repositories.UsuarioRepository;
 @Service
 public class DBService {
 
+	private final PasswordEncoder passwordEncoder;
+
+
 	@Autowired
 	private UsuarioRepository repositoryUsuario;
 	
 	@Autowired
 	private UnidadeRepository repositoryUnidade;
 
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	public DBService(PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
+
 
 	public void instantiateTestDatabase() throws ParseException{
+
 
 		Unidade unidade01 = new Unidade(null,"UPA - Rendeiras " , "000000000",-8.719084, -35.970908);
 		Unidade unidade02 = new Unidade(null, "UPA - Salgado ", "000000000",-8.619084, -35.750808);
 
-		Usuario usuario01 = new Usuario(null, "admin01","435565565",  "test01@gmail.com", passwordEncoder.encode("123"), unidade01);
-		Usuario usuario02 = new Usuario(null, "admin02", "2343546", "test02@gmail.com",passwordEncoder.encode("456") , unidade02);
+		Usuario usuario01 = new Usuario(null, "admin01","435565565",  "lol@gmail.com",passwordEncoder.encode("password"), unidade01);
+		Usuario usuario02 = new Usuario(null, "admin02", "2343546", "jose@gmail.com",passwordEncoder.encode("password") , unidade02);
 
+		usuario01.addProfile(Profile.ADMIN);
 		repositoryUnidade.saveAll(Arrays.asList(unidade01, unidade02));
 		repositoryUsuario.saveAll(Arrays.asList(usuario01, usuario02));
 
@@ -42,6 +50,8 @@ public class DBService {
 		unidade02.setLeito(leito02);
 
 		repositoryUnidade.saveAll(Arrays.asList(unidade01, unidade02));
+
+
 
 		
 

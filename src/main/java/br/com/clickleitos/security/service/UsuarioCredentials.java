@@ -1,20 +1,11 @@
-package br.com.clickleitos.dto;
+package br.com.clickleitos.security.service;
 
-import java.io.Serializable;
-
-public class CredentialDto implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class UsuarioCredentials {
 
     private String email;
     private String senha;
 
-    public CredentialDto(){
-
-    }
-
-    public CredentialDto(String email, String senha) {
-        this.email = email;
-        this.senha = senha;
+    public UsuarioCredentials() {
     }
 
     public String getEmail() {

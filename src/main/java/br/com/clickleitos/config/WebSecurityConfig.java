@@ -1,14 +1,16 @@
 package br.com.clickleitos.config;
 
-import br.com.clickleitos.security.JWTAuthenticationFilter;
-import br.com.clickleitos.security.JWTAuthorizationFilter;
-import br.com.clickleitos.security.JWTProvider;
+import br.com.clickleitos.security.jwt.JwtAuthEntryPoint;
+import br.com.clickleitos.security.jwt.JwtAuthenticationFilter;
+import br.com.clickleitos.security.jwt.JwtAuthorizationFilter;
+import br.com.clickleitos.security.jwt.JwtProvider;
+import br.com.clickleitos.security.service.UsuarioDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,8 +18,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -29,18 +31,24 @@ import java.util.Arrays;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private Environment env;
+
+    private final  PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JWTProvider jwtProvider;
+    public WebSecurityConfig(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
+    @Autowired
+    private JwtProvider jwtProvider;
+
+    @Qualifier("usuarioDetailsService")
     @Autowired
     private UserDetailsService userDetailsService;
 
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**",
-            "/usuario/**",
+            "/usuario",
             "/unidade/**"
 
     };
@@ -51,30 +59,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/auth/forgot/**",
     };
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity)throws Exception{
+    @Override   
+    protected void configure(HttpSecurity http)throws Exception{
 
-        //entrar no banco de dados teste
-        if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
-            httpSecurity.headers().frameOptions().disable();
-        }
-        httpSecurity.cors().and().csrf().disable();
-                httpSecurity.authorizeRequests()
+        http.cors().and().csrf().disable()
+                //.addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilterBefore(new JwtAuthorizationFilter(jwtProvider, userDetailsService), UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests()
+                .antMatchers("/").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
-                .antMatchers(PUBLIC_MATCHERS_POST).permitAll()
-                .anyRequest().authenticated();
+                .antMatchers(HttpMethod.POST,PUBLIC_MATCHERS_POST).permitAll()
+                .anyRequest().authenticated().and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        ;
 
-        httpSecurity.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtProvider));
-        httpSecurity.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtProvider, userDetailsService));
 
-        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
                 .userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder());
+                .passwordEncoder(passwordEncoder);
     }
 
     @Bean
@@ -86,10 +100,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration );
         return source;
-    }
-
-    @Bean
-    public BCryptPasswordEncoder  bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

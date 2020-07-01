@@ -8,6 +8,7 @@ public class ClickleitosApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClickleitosApplication.class, args);
+
 	}
 
 }

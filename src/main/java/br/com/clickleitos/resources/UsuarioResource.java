@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.clickleitos.domain.Leito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,13 +25,11 @@ import br.com.clickleitos.services.UsuarioService;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioResource {
-
+	
 	@Autowired
 	private UsuarioService serviceUsuario;
 
-	@Autowired
-	private UnidadeService unidadeService;
-	
+
 	@GetMapping
 	public ResponseEntity<List<Usuario>> findAll() {
 		List<Usuario> list = serviceUsuario.findAll();
