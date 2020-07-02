@@ -1,10 +1,7 @@
 package br.com.clickleitos.config;
 
-import br.com.clickleitos.security.jwt.JwtAuthEntryPoint;
-import br.com.clickleitos.security.jwt.JwtAuthenticationFilter;
 import br.com.clickleitos.security.jwt.JwtAuthorizationFilter;
 import br.com.clickleitos.security.jwt.JwtProvider;
-import br.com.clickleitos.security.service.UsuarioDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -48,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**",
-            "/usuario",
+            "/usuario/**",
             "/unidade/**"
 
     };
