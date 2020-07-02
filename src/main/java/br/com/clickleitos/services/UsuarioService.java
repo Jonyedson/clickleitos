@@ -7,7 +7,7 @@ import br.com.clickleitos.domain.Unidade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.clickleitos.domain.Usuario;
@@ -18,11 +18,17 @@ import br.com.clickleitos.services.exceptions.ResourceNotFoundException;
 @Service
 public class UsuarioService {
 
+	private final PasswordEncoder passwordEncoder;
+
 	@Autowired
 	private UsuarioRepository repository;
 
 	@Autowired
 	private UnidadeService unidadeService;
+
+	public UsuarioService(PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
 
 
 	public List<Usuario> findAll() {
@@ -77,7 +83,7 @@ public class UsuarioService {
 	//Long id, String nome,String cpf, String email, String senha, Unidade unidade
 	public Usuario encoPass(Usuario obj){
 		Unidade unidade = unidadeService.findById(obj.getUnidade().getId());
-		Usuario usuario = new Usuario(null, obj.getNome(), obj.getCpf(), obj.getEmail(),obj.getSenha(), unidade);
+		Usuario usuario = new Usuario(null, obj.getNome(), obj.getCpf(), obj.getEmail(),passwordEncoder.encode(obj.getSenha()), unidade);
 
 		return usuario;
 	}
