@@ -7,6 +7,7 @@ import br.com.clickleitos.domain.Leito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,8 @@ import br.com.clickleitos.domain.Unidade;
 import br.com.clickleitos.domain.Usuario;
 import br.com.clickleitos.services.UnidadeService;
 import br.com.clickleitos.services.UsuarioService;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/usuario")
@@ -43,7 +46,7 @@ public class UsuarioResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Usuario usuario) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody  Usuario usuario) {
 		Usuario obj = serviceUsuario.encoPass(usuario);
 		obj = serviceUsuario.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -57,8 +60,8 @@ public class UsuarioResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Usuario obj) {
-		obj = serviceUsuario.update(id, obj);
+	public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody @Valid Usuario obj) {
+		serviceUsuario.update(id, obj);
 		return ResponseEntity.noContent().build();
 	}
 }

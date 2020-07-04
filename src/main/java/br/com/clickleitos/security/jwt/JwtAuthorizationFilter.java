@@ -1,7 +1,8 @@
 package br.com.clickleitos.security.jwt;
 
 import br.com.clickleitos.security.service.UsuarioDetails;
-import br.com.clickleitos.security.service.UsuarioDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
-
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
 
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
@@ -27,13 +28,19 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-            UsernamePasswordAuthenticationToken auth = getAuthentication(getJwt(request));
-            if (auth != null) {
-                SecurityContextHolder.getContext().setAuthentication(auth);
+
+            try {
+                UsernamePasswordAuthenticationToken auth = getAuthentication(getJwt(request));
+                if (auth != null) {
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
+            }catch (Exception e ){
+                logger.error("Can NOT set user authentication -> Message: {}", e);
             }
 
         filterChain.doFilter(request, response);
     }
+
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
         if (jwtProvider.validToken(token)) {
             String username = jwtProvider.getEmail(token);
@@ -42,6 +49,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
     private String getJwt(HttpServletRequest request) {
         String Header = request.getHeader("Authorization");
 
@@ -49,7 +57,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             String token = Header.replace("Bearer ", "");
             return token;
         }
-
         return null;
     }
 }

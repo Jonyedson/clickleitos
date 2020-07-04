@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -16,9 +18,15 @@ public class Unidade implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank
+	@Size(min = 14, max = 14)
 	private String cnpj;
+	@NotBlank
+	@Size(min = 1 , max = 100)
 	private String nome;
+	@NotBlank
 	private Double longitude;
+	@NotBlank
 	private Double latitude;
 	@JsonIgnore
 	@OneToMany(mappedBy = "unidade")

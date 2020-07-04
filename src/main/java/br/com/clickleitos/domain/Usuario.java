@@ -1,8 +1,13 @@
 package br.com.clickleitos.domain;
 
+import br.com.clickleitos.domain.audit.AuditEvent;
 import br.com.clickleitos.domain.enums.Profile;
 import br.com.clickleitos.domain.enums.Status;
+import br.com.clickleitos.domain.erro.ErroDetails;
+import org.checkerframework.common.aliasing.qual.Unique;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -11,17 +16,29 @@ import java.util.stream.Collectors;
 
 
 @Entity
-public class Usuario implements Serializable {
+public class Usuario extends AuditEvent<String> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
+	@NotNull
+	@Size(min = 1, max = 60)
 	private String nome;
+	@NotBlank
+	@Size(min = 11, max = 11)
 	private String cpf;
+	@NotBlank
+	@Size(min = 1, max = 100)
+	@Unique
 	private String senha;
+	@NotEmpty
+	@Size(min = 1, max = 100)
+	@Email
+	@Unique
 	private String email;
+
 	private Status status;
 
 
@@ -33,11 +50,17 @@ public class Usuario implements Serializable {
 	@JoinColumn(name = "id.unidade")
 	private Unidade unidade;
 
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "usuario")
+	private Set<ErroDetails> erros;
 	public Usuario( ) {
 
 	}
 
-	public Usuario(Long id, String nome,String cpf, String email, String senha, Unidade unidade) {
+	public Usuario(String email) {
+		this.email = email;
+	}
+
+	public Usuario(Long id, String nome, String cpf, String email, String senha, Unidade unidade) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
