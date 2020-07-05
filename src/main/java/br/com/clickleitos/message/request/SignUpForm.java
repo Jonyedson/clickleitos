@@ -1,10 +1,12 @@
 package br.com.clickleitos.message.request;
 
+
 import br.com.clickleitos.domain.Unidade;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
 
 public class SignUpForm {
 

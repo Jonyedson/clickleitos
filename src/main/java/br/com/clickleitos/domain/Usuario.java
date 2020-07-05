@@ -23,14 +23,14 @@ public class Usuario extends AuditEvent<String> implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull
-	@Size(min = 1, max = 60)
+	@NotBlank
+	@Size(min = 3, max = 60)
 	private String nome;
 	@NotBlank
 	@Size(min = 11, max = 11)
 	private String cpf;
 	@NotBlank
-	@Size(min = 1, max = 100)
+	@Size(min = 3, max = 100)
 	@Unique
 	private String senha;
 	@NotEmpty

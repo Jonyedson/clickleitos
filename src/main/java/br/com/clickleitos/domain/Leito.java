@@ -8,7 +8,6 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
-import br.com.clickleitos.domain.audit.AuditEvent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -20,8 +19,10 @@ public class Leito implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@NotNull
 	private Integer total;
+
 	@NotNull
 	private Integer disponiveis;
 	

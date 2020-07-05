@@ -38,7 +38,7 @@ public class DBService {
 		Unidade unidade02 = new Unidade(null, "UPA - Salgado ", "21279146000198",-8.619084, -35.750808);
 
 		Usuario usuario01 = new Usuario(null, "admin01","25060537005",  "jhon@gmail.com",passwordEncoder.encode("password"), unidade01);
-		Usuario usuario02 = new Usuario(null, "admin02", "25060537005", "@gmail.com",passwordEncoder.encode("password") , unidade02);
+		Usuario usuario02 = new Usuario(null, "admin02", "25060537005", "oi@gmail.com",passwordEncoder.encode("password") , unidade02);
 		Usuario usuario03 = new Usuario(null, "admin02", "25060537005", "jose@gmail.com",passwordEncoder.encode("password") , unidade02);
 
 		usuario01.addProfile(Profile.ADMIN);
