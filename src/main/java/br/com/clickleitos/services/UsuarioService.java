@@ -42,8 +42,10 @@ public class UsuarioService {
 	}
 
 	public Usuario insert(Usuario obj) {
-		obj.setId(null);
-		obj = repository.save(obj);
+		Unidade unidade = unidadeService.findById(obj.getUnidade().getId());
+		Usuario usuario = new Usuario(null, obj.getNome(), obj.getCpf(), obj.getEmail(),passwordEncoder.encode(obj.getSenha()), unidade);
+
+		obj = repository.save(usuario);
 		return obj;
 	}
 

@@ -1,15 +1,16 @@
 package br.com.clickleitos.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 
 @Entity
 public class Leito implements Serializable {
@@ -18,7 +19,11 @@ public class Leito implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@NotNull
 	private Integer total;
+
+	@NotNull
 	private Integer disponiveis;
 	
 	@JsonIgnore

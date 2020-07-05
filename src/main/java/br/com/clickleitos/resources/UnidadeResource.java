@@ -37,7 +37,7 @@ public class UnidadeResource {
 		List<Unidade> list = serviceUnidade.findAll();
 		return ResponseEntity.ok().body(list);
 	}
-	//one
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Unidade> findByIdUnidade(@PathVariable Long id) {
 		Unidade obj = serviceUnidade.findById(id);

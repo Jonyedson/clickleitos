@@ -1,5 +1,6 @@
 package br.com.clickleitos.domain;
 
+import br.com.clickleitos.domain.audit.AuditEvent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -7,18 +8,27 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 @Entity
-public class Unidade implements Serializable {
+public class Unidade extends AuditEvent<String> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank
+	@Size(min = 14, max = 14)
 	private String cnpj;
+	@NotBlank
+	@Size(min = 1 , max = 100)
 	private String nome;
+	@NotNull
 	private Double longitude;
+	@NotNull
 	private Double latitude;
 	@JsonIgnore
 	@OneToMany(mappedBy = "unidade")
