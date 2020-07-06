@@ -70,7 +70,7 @@ public class AuthRestAPIs {
         if(obj != null){
             return new ResponseEntity<String>("Fail --> Email is already in usuario!", HttpStatus.BAD_REQUEST);
         }
-        Usuario usuario = new Usuario(null, signUpRequest.getNome(),signUpRequest.getCpf(),signUpRequest.getEmail(),passwordEncoder.encode(signUpRequest.getSenha()), signUpRequest.getUnidade());
+        Usuario usuario = new Usuario(null, signUpRequest.getNome(),signUpRequest.getCpf(),signUpRequest.getEmail(),signUpRequest.getSenha(), signUpRequest.getUnidade());
         usuario = usuarioService.insert(usuario);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
 

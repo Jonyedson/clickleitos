@@ -30,7 +30,7 @@ public class Usuario extends AuditEvent<String> implements Serializable {
 	@Size(min = 11, max = 11)
 	private String cpf;
 	@NotBlank
-	@Size(min = 3, max = 100)
+	@Size(min = 6, max = 100)
 	@Unique
 	private String senha;
 	@NotEmpty
