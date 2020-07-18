@@ -2,7 +2,6 @@ package br.com.clickleitos.domain;
 
 import br.com.clickleitos.domain.audit.AuditEvent;
 import br.com.clickleitos.domain.enums.Profile;
-import br.com.clickleitos.domain.enums.Status;
 import br.com.clickleitos.domain.erro.ErroDetails;
 import org.checkerframework.common.aliasing.qual.Unique;
 
@@ -39,7 +38,7 @@ public class Usuario extends AuditEvent<String> implements Serializable {
 	@Unique
 	private String email;
 
-	private Status status;
+	private Boolean ativo;
 
 
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -60,6 +59,15 @@ public class Usuario extends AuditEvent<String> implements Serializable {
 		this.email = email;
 	}
 
+	public Usuario(Long id, String nome, String cpf, String email, String senha) {
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+		this.cpf = cpf;
+		this.ativo = false;
+		addProfile(Profile.ADMIN_UNIDADE);
+	}
 	public Usuario(Long id, String nome, String cpf, String email, String senha, Unidade unidade) {
 		this.id = id;
 		this.nome = nome;
@@ -67,7 +75,7 @@ public class Usuario extends AuditEvent<String> implements Serializable {
 		this.senha = senha;
 		this.cpf = cpf;
 		this.unidade = unidade;
-		this.status = Status.INATIVO;
+		this.ativo = false;
 	}
 
 	public Long getId() {
@@ -110,12 +118,12 @@ public class Usuario extends AuditEvent<String> implements Serializable {
 		this.cpf = cpf;
 	}
 
-	public Status getStatus() {
-		return status;
+	public Boolean getStatus() {
+		return ativo;
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setStatus(Boolean status) {
+		this.ativo = status;
 	}
 
 	public Unidade getUnidade() {

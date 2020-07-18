@@ -13,6 +13,7 @@ public class UsuarioDetails implements UserDetails {
     private static final long serrialVersionUID = 1l;
 
     private Long id;
+    private String nome;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
@@ -21,8 +22,9 @@ public class UsuarioDetails implements UserDetails {
     private final boolean isCredentialsNonExpired;
     private final boolean isEnabled;
 
-    public UsuarioDetails(Long id, String email, String password, Set<Profile> profiles, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
+    public UsuarioDetails(Long id,String nome, String email, String password, Set<Profile> profiles, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
         this.id = id;
+        this.nome = nome;
         this.email = email;
         this.password = password;
         this.authorities = profiles.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
@@ -38,6 +40,14 @@ public class UsuarioDetails implements UserDetails {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getEmail() {
@@ -88,5 +98,14 @@ public class UsuarioDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isEnabled;
+    }
+
+    @Override
+    public String toString() {
+        return "UsuarioDetails{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

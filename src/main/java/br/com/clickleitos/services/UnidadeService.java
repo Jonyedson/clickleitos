@@ -23,9 +23,6 @@ public class UnidadeService {
 	@Autowired
 	private UnidadeRepository repository;
 
-	@Autowired
-	private LeitoService leitoService;
-
 	public List<Unidade> findAll() {
 		List<Unidade> list = repository.findAll();
 		return list;
@@ -36,9 +33,7 @@ public class UnidadeService {
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	//Long id, String cnpj, String nome, Double latitude, Double longitude
 	public Unidade insert(Unidade obj) {
-		Leito leito = obj.getLeito();
 		Unidade unidade = new Unidade(null, obj.getNome(), obj.getCnpj(), obj.getLatitude(), obj.getLongitude());
 		unidade = repository.save(unidade);
 

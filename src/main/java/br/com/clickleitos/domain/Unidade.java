@@ -30,6 +30,9 @@ public class Unidade extends AuditEvent<String> implements Serializable {
 	private Double longitude;
 	@NotNull
 	private Double latitude;
+
+	private Boolean ativa;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "unidade")
 	private Set<Usuario> usuarios = new HashSet<>();
@@ -98,6 +101,14 @@ public class Unidade extends AuditEvent<String> implements Serializable {
 
 	public void setLeito(Leito leito) {
 		this.leito = leito;
+	}
+
+	public Boolean getAtiva() {
+		return ativa;
+	}
+
+	public void setAtiva(Boolean ativa) {
+		this.ativa = ativa;
 	}
 
 	@Override

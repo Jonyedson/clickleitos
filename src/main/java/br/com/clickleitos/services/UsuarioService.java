@@ -49,6 +49,12 @@ public class UsuarioService {
 		return obj;
 	}
 
+	public Usuario insertGerente(Usuario obj) {
+		Usuario usuario = new Usuario(null, obj.getNome(), obj.getCpf(), obj.getEmail(),passwordEncoder.encode(obj.getSenha()));
+
+		obj = repository.save(usuario);
+		return obj;
+	}
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
