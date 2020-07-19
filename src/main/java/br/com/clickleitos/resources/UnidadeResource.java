@@ -22,9 +22,12 @@ import br.com.clickleitos.services.LeitoService;
 import br.com.clickleitos.services.UnidadeService;
 
 @RestController
-@RequestMapping("/unidade")
+@RequestMapping("/api/unidade")
 public class UnidadeResource {
-
+	/*
+	Tratar as exception nesse path
+	tratar as regras de negocios
+	 */
 	@Autowired
 	private UnidadeService serviceUnidade;
 

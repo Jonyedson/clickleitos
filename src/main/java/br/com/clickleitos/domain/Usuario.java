@@ -3,6 +3,8 @@ package br.com.clickleitos.domain;
 import br.com.clickleitos.domain.audit.AuditEvent;
 import br.com.clickleitos.domain.enums.Profile;
 import br.com.clickleitos.domain.erro.ErroDetails;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.checkerframework.common.aliasing.qual.Unique;
 
 import javax.persistence.*;
@@ -15,18 +17,22 @@ import java.util.stream.Collectors;
 
 
 @Entity
+@ApiModel(description = "Details about the Usuario")
 public class Usuario extends AuditEvent<String> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(notes = "Number unique in the DataBase")
 	private Long id;
 	
 	@NotBlank
 	@Size(min = 3, max = 60)
+	@ApiModelProperty(notes = "O nome do usuario deve conter no minimo 3 letras e no maximo 60 letras")
 	private String nome;
 	@NotBlank
 	@Size(min = 11, max = 11)
+	@ApiModelProperty(notes = "O cpf do usuario deve conter 14 number")
 	private String cpf;
 	@NotBlank
 	@Size(min = 6, max = 100)

@@ -24,13 +24,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
+@EnableSwagger2
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final  PasswordEncoder passwordEncoder;
@@ -55,9 +64,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**",
-            "/usuario/**",
-            "/unidade/**",
-            "/api/auth/**"
+            "/api/auth/**",
+            "/v2/api-docs",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+
     };
 
     private static final String[] PUBLIC_MATCHERS_POST = {
@@ -78,8 +92,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilterBefore(new JwtAuthorizationFilter(jwtProvider, userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint).and()
@@ -113,5 +125,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration );
         return source;
+    }
+
+    @Bean
+    public Docket swaggerConfiguration(){
+
+        return  new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .paths(PathSelectors.ant("/api/**"))
+                .apis(RequestHandlerSelectors.basePackage("br.com"))
+                .build()
+                .apiInfo(apiDetails());
+    }
+
+    private ApiInfo apiDetails(){
+        return new ApiInfo(
+                "Address book api",
+                "API Clickleito",
+                "1.0",
+                "Free to use",
+                new Contact("CiceroJonyedson", "https://github.com/Jonyedson","cicerojonyedison@gmail.com"),
+                "API License",
+                "https://github.com/Jonyedson",
+                Collections.emptyList()
+        );
     }
 }
